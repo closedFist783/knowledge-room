@@ -1,4 +1,5 @@
-const ANTHROPIC_KEY = import.meta.env.VITE_ANTHROPIC_KEY
+import { getAnthropicKey } from './config.js'
+const ANTHROPIC_KEY = () => getAnthropicKey()
 
 const SYSTEM_PROMPT = `You are a knowledge guide inside a 3D white room. You explain topics by speaking naturally, and you control a visual knowledge graph that updates sentence by sentence as you speak.
 
@@ -66,7 +67,7 @@ async function streamOneTurn({ messages, onText, onScene }) {
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
-      'x-api-key': ANTHROPIC_KEY,
+      'x-api-key': ANTHROPIC_KEY(),
       'anthropic-version': '2023-06-01',
       'content-type': 'application/json',
       'anthropic-dangerous-direct-browser-access': 'true',

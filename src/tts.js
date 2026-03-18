@@ -1,19 +1,20 @@
 // ElevenLabs streaming TTS with browser TTS fallback
 import { sanitizeForSpeech } from './sanitize.js'
 
-const XI_KEY   = import.meta.env.VITE_ELEVENLABS_KEY
-const VOICE_ID = import.meta.env.VITE_ELEVENLABS_VOICE || 'JBFqnCBsd6RMkjVDRZzb' // George
+import { getElevenLabsKey, getElevenLabsVoice } from './config.js'
+const XI_KEY   = () => getElevenLabsKey()
+const VOICE_ID = () => getElevenLabsVoice()
 
 let currentAudio = null
 
 // ── ElevenLabs streaming ──
 async function speakElevenLabs(text) {
   const response = await fetch(
-    `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}/stream`,
+    `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID()}/stream`,
     {
       method: 'POST',
       headers: {
-        'xi-api-key': XI_KEY,
+        'xi-api-key': XI_KEY(),
         'content-type': 'application/json',
         Accept: 'audio/mpeg',
       },
@@ -83,7 +84,7 @@ function speakBrowser(text) {
 export async function speak(rawText) {
   const text = sanitizeForSpeech(rawText)
   if (!text.trim()) return
-  if (XI_KEY) {
+  if (XI_KEY()) {
     try { return await speakElevenLabs(text) } catch (e) {
       console.warn('ElevenLabs failed, falling back to browser TTS:', e)
     }

@@ -5,6 +5,38 @@ import { streamExplanation } from './ai'
 import { speak, stop as stopSpeech, loadVoices } from './tts'
 import { sanitizeForSpeech } from './sanitize.js'
 import MathDisplay from './MathDisplay.jsx'
+import { getConfig, saveConfig, getAnthropicKey } from './config.js'
+
+// ── SETTINGS PANEL ──
+function SettingsPanel({ onClose }) {
+  const cfg = getConfig()
+  const [ak, setAk] = useState(cfg.anthropicKey || '')
+  const [xk, setXk] = useState(cfg.elevenLabsKey || '')
+  const [vid, setVid] = useState(cfg.elevenLabsVoice || 'JBFqnCBsd6RMkjVDRZzb')
+  const save = () => { saveConfig({ anthropicKey: ak, elevenLabsKey: xk, elevenLabsVoice: vid }); onClose() }
+  return (
+    <div style={{ position:'fixed', inset:0, background:'rgba(255,255,255,0.97)', zIndex:300, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:20, fontFamily:'IM Fell English, serif' }}>
+      <div style={{ fontSize:11, letterSpacing:'0.4em', color:'#aaa', textTransform:'uppercase', fontFamily:'Cormorant SC, serif' }}>API Keys</div>
+      <div style={{ display:'flex', flexDirection:'column', gap:14, width:420, padding:'0 24px' }}>
+        {[
+          ['Anthropic Key', ak, setAk, 'sk-ant-...'],
+          ['ElevenLabs Key', xk, setXk, 'sk_...'],
+          ['ElevenLabs Voice ID', vid, setVid, 'JBFqnCBsd6RMkjVDRZzb'],
+        ].map(([label, val, set, ph]) => (
+          <div key={label} style={{ display:'flex', flexDirection:'column', gap:6 }}>
+            <span style={{ fontSize:12, color:'#888', letterSpacing:'0.05em' }}>{label}</span>
+            <input value={val} onChange={e => set(e.target.value)} placeholder={ph}
+              style={{ fontFamily:'IM Fell English, serif', fontSize:15, border:'none', borderBottom:'1px solid #ccc', padding:'6px 0', outline:'none', background:'transparent' }} />
+          </div>
+        ))}
+      </div>
+      <div style={{ display:'flex', gap:20 }}>
+        <button onClick={save} style={{ fontFamily:'Cormorant SC, serif', fontSize:11, letterSpacing:'0.3em', textTransform:'uppercase', background:'#111', color:'#fff', border:'none', padding:'10px 24px', cursor:'pointer' }}>Save</button>
+        <button onClick={onClose} style={{ fontFamily:'Cormorant SC, serif', fontSize:11, letterSpacing:'0.3em', textTransform:'uppercase', background:'none', color:'#999', border:'none', cursor:'pointer' }}>Cancel</button>
+      </div>
+    </div>
+  )
+}
 
 // ── INTRO ──
 function IntroScreen({ onBegin }) {
@@ -37,6 +69,7 @@ export default function App() {
   const [phase, setPhase] = useState('intro')
   const [followupInput, setFollowupInput] = useState('')
   const [listening, setListening] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
   const { status, setStatus, rawNarration, setNarration, setRawNarration, updateScene, reset } = useStore()
 
   const messagesRef        = useRef([])
@@ -237,8 +270,12 @@ export default function App() {
           <button className="btn" onClick={handleRefocus} title="Re-center on active node">
             ⦾
           </button>
+          <button className="btn" onClick={() => setShowSettings(true)} title="Settings">
+            ⚙
+          </button>
         </div>
       </div>
+      {showSettings && <SettingsPanel onClose={() => setShowSettings(false)} />}
     </div>
   )
 }
