@@ -12,13 +12,13 @@ export function saveConfig(cfg) {
 }
 
 export function getAnthropicKey() {
-  return getConfig().anthropicKey || import.meta.env.VITE_ANTHROPIC_KEY || ''
+  return getConfig().anthropicKey || ''
 }
 
 export function getElevenLabsKey() {
-  return getConfig().elevenLabsKey || import.meta.env.VITE_ELEVENLABS_KEY || ''
+  return getConfig().elevenLabsKey || ''
 }
 
 export function getElevenLabsVoice() {
-  return getConfig().elevenLabsVoice || import.meta.env.VITE_ELEVENLABS_VOICE || 'JBFqnCBsd6RMkjVDRZzb'
+  return getConfig().elevenLabsVoice || 'JBFqnCBsd6RMkjVDRZzb'
 }
