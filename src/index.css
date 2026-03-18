@@ -1,0 +1,127 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #ffffff;
+  font-family: 'IM Fell English', 'Cormorant Garamond', Georgia, serif;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+#root { width: 100vw; height: 100vh; }
+
+/* ── INTRO ── */
+.intro-screen {
+  position: fixed; inset: 0; background: #fff;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 40px; z-index: 200;
+  transition: opacity 0.9s ease;
+}
+.intro-screen.fading { opacity: 0; pointer-events: none; }
+
+.intro-title {
+  font-family: 'Cormorant SC', serif;
+  font-size: 11px; font-weight: 300;
+  letter-spacing: 0.45em; color: #bbb; text-transform: uppercase;
+}
+
+.intro-input-wrap {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 24px;
+  width: 100%; max-width: 500px; padding: 0 28px;
+  animation: fadeUp 1.4s ease 0.4s both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.intro-label {
+  font-family: 'IM Fell English', serif;
+  font-size: 28px; font-style: italic;
+  color: #1a1a1a; text-align: center; line-height: 1.45;
+}
+
+.intro-input {
+  width: 100%; background: transparent; border: none;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+  font-family: 'IM Fell English', serif;
+  font-size: 20px; font-style: italic;
+  color: #111; outline: none; text-align: center;
+  transition: border-color 0.3s;
+}
+.intro-input::placeholder { color: #ccc; }
+.intro-input:focus { border-bottom-color: #666; }
+
+.intro-btn {
+  font-family: 'Cormorant SC', serif;
+  font-size: 10px; font-weight: 400;
+  letter-spacing: 0.4em; color: #999;
+  background: none; border: none; cursor: pointer;
+  text-transform: uppercase; padding: 6px;
+  transition: color 0.2s;
+}
+.intro-btn:hover { color: #111; }
+.intro-btn:disabled { color: #ddd; cursor: default; }
+
+/* ── MAIN UI OVERLAY ── */
+.ui-overlay {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 100; display: flex; flex-direction: column;
+  align-items: center; padding: 28px 24px; gap: 10px;
+  pointer-events: none;
+  animation: fadeIn 1.2s ease both;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.narration-box {
+  max-width: 620px; width: 100%;
+  font-family: 'IM Fell English', serif;
+  font-size: 17px; font-style: italic;
+  color: #333; line-height: 1.75;
+  text-align: center; min-height: 52px;
+}
+
+.status-bar {
+  font-family: 'Cormorant SC', serif;
+  font-size: 10px; color: #c0c0c0;
+  letter-spacing: 0.35em; text-transform: uppercase; height: 18px;
+}
+
+.input-row {
+  display: flex; gap: 12px;
+  width: 100%; max-width: 560px;
+  pointer-events: all; align-items: center;
+}
+
+.topic-input {
+  flex: 1; background: transparent; border: none;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 8px 0;
+  font-family: 'IM Fell English', serif;
+  font-size: 16px; font-style: italic;
+  color: #111; outline: none;
+  transition: border-color 0.3s;
+}
+.topic-input:focus { border-bottom-color: #999; }
+.topic-input::placeholder { color: #ccc; font-style: italic; }
+
+.btn {
+  background: none; border: none;
+  font-family: 'Cormorant SC', serif;
+  font-size: 10px; letter-spacing: 0.28em;
+  color: #999; cursor: pointer;
+  text-transform: uppercase; padding: 6px 10px;
+  transition: color 0.2s;
+}
+.btn:hover { color: #111; }
+.btn:disabled { color: #ddd; cursor: default; }
+.btn.mic-btn { font-size: 16px; letter-spacing: 0; padding: 4px 8px; }
+.btn.mic-btn.listening { color: #111; animation: pulse 1s infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
